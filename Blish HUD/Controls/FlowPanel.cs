@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using Microsoft.Xna.Framework;
+using static Blish_HUD.Controls.ControlFlowDirection;
 
 namespace Blish_HUD.Controls {
 
     public enum ControlFlowDirection {
         LeftToRight,
-        TopToBottom
+        RightToLeft,
+        TopToBottom,
+        BottomToTop
     }
 
     public class FlowPanel : Panel {
@@ -103,16 +107,29 @@ namespace Blish_HUD.Controls {
                 nextBottom = Math.Max(nextBottom, child.Bottom);
             }
         }
-
+        private void ReflowChildLayoutRightToLeft(List<Control> allChildren) {
+            // TODO: Implement FlowPanel FlowDirection.RightToLeft
+        }
         private void ReflowChildLayoutTopToBottom(List<Control> allChildren) {
             // TODO: Implement FlowPanel FlowDirection.TopToBottom
         }
-
+        private void ReflowChildLayoutBottomToTop(List<Control> allChildren) {
+            // TODO: Implement FlowPanel FlowDirection.BottomToTop
+        }
         private void ReflowChildLayout(List<Control> allChildren) {
-            if (this.FlowDirection == ControlFlowDirection.LeftToRight) {
-                ReflowChildLayoutLeftToRight(allChildren.Where(c => c.GetType() != typeof(Scrollbar)).ToList());
-            } else {
-                ReflowChildLayoutTopToBottom(allChildren.Where(c => c.GetType() != typeof(Scrollbar)).ToList());
+            switch (this.FlowDirection) {
+                case ControlFlowDirection.LeftToRight:
+                    ReflowChildLayoutLeftToRight(allChildren.Where(c => c.GetType() != typeof(Scrollbar)).ToList());
+                    break;
+                case ControlFlowDirection.RightToLeft:
+                    ReflowChildLayoutRightToLeft(allChildren.Where(c => c.GetType() != typeof(Scrollbar)).ToList());
+                    break;
+                case ControlFlowDirection.TopToBottom:
+                    ReflowChildLayoutTopToBottom(allChildren.Where(c => c.GetType() != typeof(Scrollbar)).ToList());
+                    break;
+                case ControlFlowDirection.BottomToTop:
+                    ReflowChildLayoutBottomToTop(allChildren.Where(c => c.GetType() != typeof(Scrollbar)).ToList());
+                    break;
             }
         }
 
